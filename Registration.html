@@ -8,40 +8,39 @@
 <body>
     <h1>Registration form</h1>
 
-    <form method="post" action="ExamPage.html">
+    <form method="get" action="Sign-in.html" onsubmit="return validateRegisterForm(event)">
 
-        <label> First Name
-            <input type="text"  name="first_name"  placeholder="Enter your frist name" required autofocus>
-        </label>
+    <label for="first_name">First Name</label>
+    <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" autofocus >
+    <div id="validationMessage1" class="validation-message"></div>
+    <br><br>
 
-        <br><br>
+    <label for="last_name">Last Name</label>
+    <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" >
+    <div id="validationMessage2" class="validation-message"></div>
+    <br><br>
 
-        <label> Last Name 
-            <input type="text"  name="last_name"  placeholder="Enter your last name" required>
-        </label>
+    <label for="email_address">Email Address</label>
+    <input type="email" id="email_address" name="email_address" placeholder="Enter your email address" required>
+    <div id="validationMessage3" class="validation-message"></div>
+    <br><br>
 
-        <br><br>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required minlength="8">
+    <div id="validationMessage4" class="validation-message"></div>
+    <br><br>
 
-        <label> Email Address 
-            <input type="email" name="email_address"  placeholder="Enter your Email Address" required>
-        </label>
-
-        <br><br>
-
-        <label> password 
-            <input type="password" name="password"  placeholder="Enter your password" required minlength="8">
-        </label>
-
-        <br><br>
-
-        <label> Re-Password 
-            <input type="password" name="re_Password"  placeholder="Enter your password agin" required minlength="8">
-        </label>
-
-        <br><br>
-
-        <input type="submit" value="Register">
+    <label for="re_password">Re-Password</label>
+    <input type="password" id="re_password" name="re_Password" placeholder="Enter your password again" required minlength="8">
+    <div id="validationMessage5" class="validation-message"></div>
+    <br><br>
     
-    </form>
+    
+
+    <input type="submit" value="Register">
+</form>
+
+
+    <script src="Registration.js"></script>
 </body>
 </html>

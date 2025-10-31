@@ -91,64 +91,90 @@ for (let i = 0; i < arr.length; i++) {
 
 
 //-------------------------------------------------------------------------
+function mark() {
+    var list;
+    marks.addEventListener("click", function () {
 
+        if (marks.textContent == "Mark") {
 
-    function mark (){
-            var list;
-            marks.addEventListener("click",function(){
+            console.log("ffffffffff");
+            //---------------------------------------------
 
-                if(marks.textContent=="Mark"){
+            //Marked if in list
+            let alreadyMarked = false;
+            let items = marklist.getElementsByTagName("li");
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].textContent === arr[random].questionText) {
+                    alreadyMarked = true;
+                    break;
+                }
+            }
 
-                console.log("ffffffffff");
-            
+            if (!alreadyMarked) {
+
                 list = document.createElement("li");
                 //--------------------------------------------------------------
-            
 
-
-
-                //-------------------------------------------------------
-                list.dataset.index=random;
-                list.addEventListener("click",function(){
+                list.dataset.index = random;
+                list.addEventListener("click", function () {
                     currentIndex = dublicateRandom.indexOf(parseInt(this.dataset.index));
                     RandomQuestion();
                     number.textContent = currentIndex + 1;
-                    mark.textContent="unmark"
+                    mark.textContent = "unmark";
 
-                    // currentIndex=random;
-                    // RandomQuestion();
-                    // arr[currentIndex].questionText
+                    //--------------------------------------------------
+                    //Reload answer
+
+                    let Answer = window.localStorage.getItem(`answer${currentIndex}`);
+                    if (Answer) {
+                        for (let i = 0; i < inputs.length; i++) {
+                            if (inputs[i].value === Answer) {
+                                inputs[i].checked = true;
+                            }
+                        }
+                    } else {
+                        for (let i = 0; i < inputs.length; i++) {
+                            inputs[i].checked = false;
+                        }
+                    }
                 });
+                //--------------------------------------------------
+
+                // currentIndex=random;
+                // RandomQuestion();
+                // arr[currentIndex].questionText
+
                 //-------------------------------------------------------
                 var text = document.createTextNode(arr[random].questionText);
                 list.appendChild(text);
                 marklist.appendChild(list);
                 //----------------------------------------
+
                 // if(marklist.contains(list)){
                 //     marks.textContent="unmark";
                 // }
-                // //------------------------------------
-                marks.textContent="unmark";
 
+                marks.textContent = "unmark";
+            }
 
+        } else if (marks.textContent == "unmark") {
+
+            console.log("hhhhhhhh");
+
+            var items = marklist.getElementsByTagName("li");
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].textContent == arr[random].questionText) {
+                    marklist.removeChild(items[i]);
+                    break;
                 }
-                else if(marks.textContent=="unmark"){
+            }
 
-                    console.log("hhhhhhhh");
-                    
-
-                    var items = marklist.getElementsByTagName("li");
-                for (var i = 0; i < items.length; i++) {
-                    if (items[i].textContent == arr[random].questionText) {
-                        marklist.removeChild(items[i]);
-                        break; 
-                    }
-                }
-                
-                marks.textContent="Mark";
-
-            }})
+            marks.textContent = "Mark";
         }
+    });
+}
+
+
 //-------------------------------------------------
 // var dublicateRandom =[];
 // var random;
@@ -156,6 +182,7 @@ for (let i = 0; i < arr.length; i++) {
 // var number;
 // var currentIndex=0;
 //------------------------------------------------
+
 
 function RandomQuestion (){
     
@@ -179,14 +206,37 @@ function RandomQuestion (){
         inputs[index].value=arr[random].choices[index];
         // console.log(inputs[index].value);
         inputs[index].addEventListener("input",function() {
-            if(inputs[index].value == arr[random].answerText){
+            //----------------------------------------------------------------------------
+            //save answers
+            window.localStorage.setItem(`answer${currentIndex}`,this.value);
+            //------------------------------------------------------------------------
 
 
-            console.log("true")
-        }else{
-            console.log("false")
-        }
+        //     if(inputs[index].value == arr[random].answerText){
+        //     console.log("true")
+        //     count++
+        //     console.log(count);
+        // }else{
+        //     console.log("false")
+        // }
         })
+
+
+        //------------------------------------------------
+
+        //Reload Answer in next and previous
+        Answer = window.localStorage.getItem(`answer${currentIndex}`);
+                        if (Answer) {
+                            for (let i = 0; i < inputs.length; i++) {
+                                if (inputs[i].value === Answer) {
+                                    inputs[i].checked = true;
+                                } else {
+                                    inputs[i].checked = false;
+                                }
+                            }
+                        }
+
+
 
 //---------------------------------
         mark();
@@ -241,9 +291,38 @@ next.addEventListener("click",function(){
     }
 })
 
+// var count = 0;
+
 submit.addEventListener("click",function(e){
+
+
+    // for (let index = 0; index < dublicateRandom.length; index++) {
+    //     if(dublicateRandom[index].answerText=== inputs[index].value){
+    //         console.log("true")
+    //         count++
+    //     }
+        
+    // }
+
+    e.preventDefault();
+
+        count = 0;
+
+        for (let i = 0; i < dublicateRandom.length; i++) {
+            
+            var selectedAnswer = localStorage.getItem(`answer${i}`);
+            if (selectedAnswer && selectedAnswer.trim() === arr[dublicateRandom[i]].answerText.trim()) {
+                count++;
+            }
+
+            console.log(count);
+        
+}
+
+    window.localStorage.setItem("score",count)
     
-    location.href="http:GradesPage.html";
+    location.href="GradesPage.html";
+
     // if(history.back() == "http:ExamPage.html"){
     //     e.preventDefault();
     // }
